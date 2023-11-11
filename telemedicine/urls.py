@@ -21,5 +21,11 @@ from back import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('measures/', views.save_measure)
+    # path('measures/new', views.save_measure),
+    # path('measures/', views.get_measures),
+    # path('measures/<int:pk>/delete/', views.delete_measure),
+    path('measures/', views.MeasuresView.as_view()),
+    path('measures/<str:pk>/', views.MeasureDetailView.as_view()),
+    path('patients/', views.PatientsView.as_view()),
+    path('patients/<str:pk>/', views.PatientDetailView.as_view()),
 ]
