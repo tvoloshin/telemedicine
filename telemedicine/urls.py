@@ -28,4 +28,5 @@ urlpatterns = [
     path('measures/<str:pk>/', views.MeasureDetailView.as_view()),
     path('patients/', views.PatientsView.as_view()),
     path('patients/<str:pk>/', views.PatientDetailView.as_view()),
+    path('patients/<str:pk>/measures/', views.PatientMeasuresView.as_view()),
 ]

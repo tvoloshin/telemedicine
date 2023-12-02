@@ -45,8 +45,16 @@ class MeasuresView(generics.GenericAPIView):
 
     def post(self, request):
         measure = MeasureSerializer(data=request.data)
+
+        # patient = Patient.objects.first()
+        # patient.measure_set.create(measure)
+
         if measure.is_valid():
-            measure.save()
+            patient = Patient.objects.first()
+            patient.measure_set.create(**measure.data)
+            # measure.save()
+        else:
+            print(measure.errors)
 
         return Response(measure.data)
 
@@ -94,6 +102,18 @@ class PatientDetailView(generics.GenericAPIView):
     def get(self, request, pk):
         patient = Patient.objects.get(pk=pk)
         serializer = PatientSerializer(patient)
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        patient = get_object_or_404(Patient, pk=pk)
+        patient.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)
+
+
+class PatientMeasuresView(generics.GenericAPIView):
+    def get(self, request, pk):
+        patient = Patient.objects.get(pk=pk)
+        serializer = MeasureSerializer(patient.measure_set.all(), many=True)
         return Response(serializer.data)
 
     def delete(self, request, pk):
